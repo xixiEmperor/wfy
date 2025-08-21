@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Element Plus 基础风格覆盖 */
+:root {
+  --el-color-primary: #409EFF;
+  --el-border-radius-base: 10px;
+}
+
+.el-card, .el-dialog, .el-drawer {
+  border-radius: 10px !important;
+}
+
+.page-card {
+  @apply bg-white shadow-card rounded-xl p-4;
+}
+
+.toolbar {
+  @apply flex items-center justify-between gap-3 mb-4;
+}
+
+.form-inline {
+  @apply flex flex-wrap items-end gap-3;
+}
+
+
