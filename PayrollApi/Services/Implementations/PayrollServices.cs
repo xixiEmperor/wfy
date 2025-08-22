@@ -209,7 +209,7 @@ public class SalaryChangeService : ISalaryChangeService
 		if (employeeId.HasValue) q = q.Where(x => x.EmployeeId == employeeId);
 		if (req.DateFrom.HasValue) q = q.Where(x => x.ChangeDate >= req.DateFrom);
 		if (req.DateTo.HasValue) q = q.Where(x => x.ChangeDate <= req.DateTo);
-		return await q.ToPagedResultAsync(req, ct);
+		return await q.Include(x => x.Employee).ToPagedResultAsync(req, ct);
 	}
 
 	public async Task<SalaryChange> CreateAsync(SalaryChange entity, CancellationToken ct)
@@ -263,7 +263,7 @@ public class YearEndBonusService : IYearEndBonusService
 	{
 		var q = _db.YearEndBonuses.AsNoTracking().Where(x => !x.IsDeleted);
 		if (employeeId.HasValue) q = q.Where(x => x.EmployeeId == employeeId);
-		return await q.ToPagedResultAsync(req, ct);
+		return await q.Include(x => x.Employee).ToPagedResultAsync(req, ct);
 	}
 
 	public async Task<YearEndBonus> CreateAsync(YearEndBonus entity, CancellationToken ct)

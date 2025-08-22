@@ -125,7 +125,7 @@ public class PayrollConfig : IEntityTypeConfiguration<Payroll>
 		builder.Property(x => x.GrossAmount).HasColumnType("decimal(18,2)");
 		builder.Property(x => x.Deductions).HasColumnType("decimal(18,2)");
 		builder.Property(x => x.NetAmount).HasColumnType("decimal(18,2)");
-		builder.Property(x => x.Status).HasConversion<byte>().HasDefaultValue((byte)PayrollStatus.Draft);
+		builder.Property(x => x.Status).HasConversion<byte>();
 		builder.Property(x => x.IsDeleted).HasDefaultValue(false);
 		builder.HasOne(x => x.Employee)
 			.WithMany(e => e.Payrolls)

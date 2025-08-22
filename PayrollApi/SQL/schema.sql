@@ -56,7 +56,7 @@ CREATE TABLE dbo.Employee (
     IsDeleted BIT NOT NULL DEFAULT 0,
     CONSTRAINT UQ_Employee_EmployeeNo UNIQUE(EmployeeNo),
     CONSTRAINT FK_Employee_Department FOREIGN KEY (DepartmentId) REFERENCES dbo.Department(DepartmentId) ON DELETE NO ACTION ON UPDATE CASCADE,
-    CONSTRAINT FK_Employee_Workshop FOREIGN KEY (WorkshopId) REFERENCES dbo.Workshop(WorkshopId) ON DELETE NO ACTION ON UPDATE CASCADE
+    CONSTRAINT FK_Employee_Workshop FOREIGN KEY (WorkshopId) REFERENCES dbo.Workshop(WorkshopId) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 GO
 CREATE INDEX IX_Employee_Department_Workshop ON dbo.Employee(DepartmentId, WorkshopId);
@@ -183,11 +183,11 @@ INSERT INTO dbo.Workshop(Name, DepartmentId) VALUES
 GO
 
 INSERT INTO dbo.Employee(EmployeeNo, FullName, Gender, DepartmentId, WorkshopId, HireDate, BaseSalary) VALUES
-('E001','Alice','Female',2,1,'2020-01-15',8000),
-('E002','Bob','Male',2,2,'2019-03-10',7800),
-('E003','Charlie','Male',3,4,'2021-05-01',6000),
-('E004','Diana','Female',1,NULL,'2018-08-20',7000),
-('E005','Evan','Male',5,NULL,'2022-02-11',6500);
+('E001','张小花','女',2,1,'2020-01-15',8000),
+('E002','李明华','男',2,2,'2019-03-10',7800),
+('E003','王建军','男',3,4,'2021-05-01',6000),
+('E004','刘美丽','女',1,NULL,'2018-08-20',7000),
+('E005','陈志强','男',5,NULL,'2022-02-11',6500);
 GO
 
 -- Attendance sample (mix of overtime/absent)

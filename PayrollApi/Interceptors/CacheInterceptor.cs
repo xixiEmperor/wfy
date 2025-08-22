@@ -54,10 +54,40 @@ public class CacheInterceptor : IInterceptor
 
 	public static string BuildKey(IInvocation invocation, ICacheVersionProvider versionProvider)
 	{
-		var method = $"{invocation.TargetType.FullName}.{invocation.Method.Name}";
-		var args = JsonSerializer.Serialize(invocation.Arguments);
-		var ver = versionProvider.GetVersion(invocation.TargetType);
+		var method = $"{invocation.TargetType?.FullName}.{invocation.Method.Name}";
+		
+		// 过滤掉不可序列化的参数（如CancellationToken）
+		var serializableArgs = invocation.Arguments
+			.Where(arg => arg != null && IsSerializable(arg))
+			.ToArray();
+		
+		var args = JsonSerializer.Serialize(serializableArgs);
+		var ver = versionProvider.GetVersion(invocation.TargetType!);
 		return CachePrefix + method + ":v" + ver + ":" + args;
+	}
+	
+	private static bool IsSerializable(object obj)
+	{
+		var type = obj.GetType();
+		
+		// 排除已知的不可序列化类型
+		if (type == typeof(CancellationToken) || 
+		    type == typeof(CancellationTokenSource) ||
+		    type.Name.Contains("Token"))
+		{
+			return false;
+		}
+		
+		// 尝试序列化以验证
+		try
+		{
+			JsonSerializer.Serialize(obj);
+			return true;
+		}
+		catch
+		{
+			return false;
+		}
 	}
 
 	private static object? GetTaskResult(Task task)

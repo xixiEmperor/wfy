@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace PayrollApi.Domain.Entities;
 
 public abstract class BaseEntity
@@ -39,11 +41,17 @@ public class Employee : BaseEntity
 
 	public Department Department { get; set; } = null!;
 	public Workshop? Workshop { get; set; }
+	[JsonIgnore]
 	public ICollection<Attendance> Attendances { get; set; } = new List<Attendance>();
+	[JsonIgnore]
 	public ICollection<LogisticsData> Logistics { get; set; } = new List<LogisticsData>();
+	[JsonIgnore]
 	public ICollection<SocialSecurity> SocialSecurities { get; set; } = new List<SocialSecurity>();
+	[JsonIgnore]
 	public ICollection<Payroll> Payrolls { get; set; } = new List<Payroll>();
+	[JsonIgnore]
 	public ICollection<SalaryChange> SalaryChanges { get; set; } = new List<SalaryChange>();
+	[JsonIgnore]
 	public ICollection<YearEndBonus> YearEndBonuses { get; set; } = new List<YearEndBonus>();
 }
 

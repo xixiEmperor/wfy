@@ -7,7 +7,13 @@ namespace PayrollApi.Controllers;
 public class ErrorHandlingMiddleware
 {
 	private readonly RequestDelegate _next;
-	public ErrorHandlingMiddleware(RequestDelegate next) => _next = next;
+	private readonly ILogger<ErrorHandlingMiddleware> _logger;
+	
+	public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
+	{
+		_next = next;
+		_logger = logger;
+	}
 
 	public async Task Invoke(HttpContext context)
 	{
@@ -24,6 +30,7 @@ public class ErrorHandlingMiddleware
 		}
 		catch (Exception ex)
 		{
+			_logger.LogError(ex, "未处理的异常: {Message}", ex.Message);
 			context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 			context.Response.ContentType = "application/json";
 			var payload = ApiResponse<object>.Fail("服务器异常");

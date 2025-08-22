@@ -19,7 +19,7 @@ public class AttendanceService : IAttendanceService
 		if (employeeId.HasValue) q = q.Where(x => x.EmployeeId == employeeId);
 		if (req.DateFrom.HasValue) q = q.Where(x => x.WorkDate >= req.DateFrom);
 		if (req.DateTo.HasValue) q = q.Where(x => x.WorkDate <= req.DateTo);
-		return await q.ToPagedResultAsync(req, ct);
+		return await q.Include(x => x.Employee).ToPagedResultAsync(req, ct);
 	}
 
 	public async Task<Attendance> CreateAsync(Attendance entity, CancellationToken ct)
@@ -65,7 +65,7 @@ public class LogisticsService : ILogisticsService
 		var q = _db.LogisticsData.AsNoTracking().Where(x => !x.IsDeleted);
 		if (employeeId.HasValue) q = q.Where(x => x.EmployeeId == employeeId);
 		if (!string.IsNullOrWhiteSpace(month)) q = q.Where(x => x.Month == month);
-		return await q.ToPagedResultAsync(req, ct);
+		return await q.Include(x => x.Employee).ToPagedResultAsync(req, ct);
 	}
 
 	public async Task<LogisticsData> CreateAsync(LogisticsData entity, CancellationToken ct)
@@ -111,7 +111,7 @@ public class SocialSecurityService : ISocialSecurityService
 		var q = _db.SocialSecurities.AsNoTracking().Where(x => !x.IsDeleted);
 		if (employeeId.HasValue) q = q.Where(x => x.EmployeeId == employeeId);
 		if (!string.IsNullOrWhiteSpace(month)) q = q.Where(x => x.Month == month);
-		return await q.ToPagedResultAsync(req, ct);
+		return await q.Include(x => x.Employee).ToPagedResultAsync(req, ct);
 	}
 
 	public async Task<SocialSecurity> CreateAsync(SocialSecurity entity, CancellationToken ct)

@@ -30,8 +30,27 @@ builder.Host.UseSerilog((context, loggerConfiguration) =>
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+	.AddJsonOptions(options =>
+	{
+		options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+		options.JsonSerializerOptions.WriteIndented = true;
+		options.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+		options.JsonSerializerOptions.MaxDepth = 64;
+	});
 builder.Services.AddEndpointsApiExplorer();
+
+// 添加CORS配置
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowFrontend", policy =>
+	{
+		policy.WithOrigins("http://localhost:5173", "http://127.0.0.1:5173")
+			  .AllowAnyMethod()
+			  .AllowAnyHeader()
+			  .AllowCredentials();
+	});
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
@@ -128,6 +147,9 @@ using (var scope = app.Services.CreateScope())
 	var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 	await db.Database.MigrateAsync();
 }
+
+// 启用CORS
+app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();

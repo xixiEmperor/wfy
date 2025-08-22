@@ -35,8 +35,8 @@
         共 {{ total }} 条记录
       </div>
       <el-pagination
-        v-model:current-page="currentPage"
-        v-model:page-size="pageSize"
+        v-model:current-page="currentPageModel"
+        v-model:page-size="pageSizeModel"
         :total="total"
         :page-sizes="[10, 20, 50, 100]"
         layout="sizes, prev, pager, next, jumper"
@@ -86,7 +86,18 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['refresh', 'sort-change', 'size-change', 'current-change', 'selection-change'])
+const emit = defineEmits(['refresh', 'sort-change', 'size-change', 'current-change', 'selection-change', 'update:currentPage', 'update:pageSize'])
+
+// 使用computed来处理v-model双向绑定
+const currentPageModel = computed({
+  get: () => props.currentPage,
+  set: (value) => emit('update:currentPage', value)
+})
+
+const pageSizeModel = computed({
+  get: () => props.pageSize,
+  set: (value) => emit('update:pageSize', value)
+})
 
 const handleSortChange = ({ prop, order }) => {
   emit('sort-change', { prop, order })

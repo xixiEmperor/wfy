@@ -115,7 +115,7 @@ public class EmployeeService : IEmployeeService
 		if (req.DepartmentId.HasValue) q = q.Where(x => x.DepartmentId == req.DepartmentId);
 		if (req.WorkshopId.HasValue) q = q.Where(x => x.WorkshopId == req.WorkshopId);
 		if (!string.IsNullOrWhiteSpace(req.Keyword)) q = q.Where(x => x.EmployeeNo.Contains(req.Keyword!) || x.FullName.Contains(req.Keyword!));
-		return await q.ToPagedResultAsync(req, ct);
+		return await q.Include(x => x.Department).Include(x => x.Workshop).ToPagedResultAsync(req, ct);
 	}
 
 	public async Task<Employee> CreateAsync(Employee entity, CancellationToken ct)

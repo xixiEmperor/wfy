@@ -242,7 +242,7 @@ public class PayrollsController : BaseController
 	public async Task<ActionResult<ApiResponse<object>>> Delete(int id, CancellationToken ct)
 	{
 		await _svc.DeleteAsync(id, ct);
-		return OkResponse<object>(null);
+		return OkResponse<object>(new object());
 	}
 
 	[HttpPost("{id:int}/confirm")]
@@ -326,7 +326,7 @@ public class SalaryChangesController : BaseController
 	public async Task<ActionResult<ApiResponse<object>>> Delete(int id, CancellationToken ct)
 	{
 		await _svc.DeleteAsync(id, ct);
-		return OkResponse<object>(null);
+		return OkResponse<object>(new object());
 	}
 }
 
@@ -359,7 +359,7 @@ public class YearEndBonusesController : BaseController
 	public async Task<ActionResult<ApiResponse<object>>> Delete(int id, CancellationToken ct)
 	{
 		await _svc.DeleteAsync(id, ct);
-		return OkResponse<object>(null);
+		return OkResponse<object>(new object());
 	}
 }
 

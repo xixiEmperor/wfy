@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PayrollApi</name>
+    </assembly>
+    <members>
+        <member name="T:PayrollApi.Controllers.AuthController">
+            <summary>
+            认证登录（返回 JWT）
+            </summary>
+        </member>
+        <member name="M:PayrollApi.Controllers.AuthController.Login(PayrollApi.Controllers.LoginRequest)">
+            <summary>
+            账号密码登录，返回 accessToken 与过期时间
+            </summary>
+        </member>
+        <member name="T:PayrollApi.Controllers.DevController">
+            <summary>
+            开发辅助接口（仅开发环境使用）
+            </summary>
+        </member>
+        <member name="M:PayrollApi.Controllers.DevController.ResetData">
+            <summary>
+            清理并重新初始化示例数据
+            </summary>
+        </member>
+    </members>
+</doc>
